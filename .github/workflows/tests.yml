@@ -26,3 +26,12 @@ jobs:
       # Instala dependências e roda os testes
       - name: Run tests with Maven
         run: mvn clean test
+
+  - name: Generate Allure report
+    run: mvn allure:report
+
+  - name: Upload Allure report
+    uses: actions/upload-artifact@v4
+    with:
+      name: allure-report
+      path: target/site/allure-maven-plugin
