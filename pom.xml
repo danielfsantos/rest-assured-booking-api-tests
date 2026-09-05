@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.wandinho</groupId>
-    <artifactId>assureApi</artifactId>
+    <groupId>com.github.danielfsantos</groupId>
+    <artifactId>rest-assured-booking-api-tests</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>AssureAPI - RestAssured Project</name>
-    <url>https://github.com/Wandinho/AssureAPI</url>
+    <name>Rest Assured Booking API Tests</name>
+    <url>https://github.com/danielfsantos/rest-assured-booking-api-tests</url>
 
     <dependencies>
         <!-- JUnit 5 -->
