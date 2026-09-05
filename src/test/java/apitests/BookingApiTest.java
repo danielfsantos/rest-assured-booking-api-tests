@@ -24,7 +24,7 @@ public class BookingApiTest extends BaseTest {
 
     @Test
     public void testGetBookingParam(){
-        Response response = getBookingById(1);
+        Response response = getBookingById(2);
         Assertions.assertEquals(200,response.getStatusCode());
         Booking booking = response.as(Booking.class);
         Assertions.assertNotNull(booking.getFirstname());
