@@ -30,9 +30,7 @@ public class BookingApiTest extends BaseTest {
         Assertions.assertNotNull(booking.getFirstname());
         Assertions.assertNotNull(booking.getLastname());
         Assertions.assertTrue(booking.getTotalprice() > 0);
-
-
-    }
+   }
 
     @Test
     public void testCreateNewBooking(){
