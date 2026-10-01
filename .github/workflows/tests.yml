@@ -34,11 +34,11 @@ jobs:
 
       - name: Rodar análise de flakiness
         if: always()
-        run: mvn -q exec:java -Dexec.mainClass="com.assureapi.watcher.FlakinessAnalyzer" -Dexec.classpathScope="test"
+        run: mvn -q exec:java -Dexec.mainClass="watcher.FlakinessAnalyzer" -Dexec.classpathScope="test"
 
       - name: Gerar dashboard de flakiness
         if: always()
-        run: mvn -q exec:java -Dexec.mainClass="com.assureapi.watcher.FlakinessDashboardGenerator" -Dexec.classpathScope="test"
+        run: mvn -q exec:java -Dexec.mainClass="watcher.FlakinessDashboardGenerator" -Dexec.classpathScope="test"
 
       - name: Gerar relatório Allure
         if: always()
