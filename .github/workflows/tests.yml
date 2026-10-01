@@ -2,36 +2,77 @@ name: API Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      # Pega o código
-      - name: Checkout repository
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      # Configura o Java
-      - name: Set up JDK 17
+      - name: Configurar JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
+
+      - name: Restaurar histórico de testes
+        uses: actions/cache@v4
+        with:
+          path: test-history.jsonl
+          key: test-history-${{ github.run_id }}
+          restore-keys: |
+            test-history-
 
       # Instala dependências e roda os testes
       - name: Run tests with Maven
         run: mvn clean test
 
-      - name: Generate Allure report
-        run: mvn allure:report
+      - name: Rodar análise de flakiness
+        if: always()
+        run: mvn -q exec:java -Dexec.mainClass="com.assureapi.watcher.FlakinessAnalyzer" -Dexec.classpathScope="test"
 
-      - name: Upload Allure report
+      - name: Gerar dashboard de flakiness
+        if: always()
+        run: mvn -q exec:java -Dexec.mainClass="com.assureapi.watcher.FlakinessDashboardGenerator" -Dexec.classpathScope="test"
+
+      - name: Gerar relatório Allure
+        if: always()
+        run: mvn -q allure:report
+
+      - name: Verificar limite de flakiness
+        if: always()
+        run: |
+          THRESHOLD=0.15
+          MAX_SCORE=$(jq '[.[].score] | max // 0' flakiness-report.json)
+          echo "Maior score de flakiness encontrado: $MAX_SCORE"
+          if (( $(echo "$MAX_SCORE >= $THRESHOLD" | bc -l) )); then
+            echo "::warning::Foram encontrados testes com score de flakiness >= $THRESHOLD. Veja o dashboard publicado."
+          fi
+
+      - name: Salvar histórico de testes atualizado
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: test-history.jsonl
+          key: test-history-${{ github.run_id }}
+
+      - name: Publicar relatório Allure
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plugin
+          path: target/site/allure-maven
+
+      - name: Publicar dashboard de flakiness
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flakiness-dashboard
+          path: |
+            flakiness-report.json
+            flakiness-dashboard.html
