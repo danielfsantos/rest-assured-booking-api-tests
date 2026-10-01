@@ -7,6 +7,11 @@
     <name>Rest Assured Booking API Tests</name>
     <url>https://github.com/danielfsantos/rest-assured-booking-api-tests</url>
 
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <!-- JUnit 5 -->
         <dependency>
@@ -47,10 +52,21 @@
             <version>2.25.0</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>categories.json</include>
+                </includes>
+                <targetPath>${project.build.directory}/allure-results</targetPath>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -69,6 +85,11 @@
                 <configuration>
                     <reportVersion>2.25.0</reportVersion>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.1</version>
             </plugin>
         </plugins>
     </build>

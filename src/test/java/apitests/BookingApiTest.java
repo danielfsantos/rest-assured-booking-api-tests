@@ -8,6 +8,7 @@ import io.restassured.internal.RestAssuredResponseImpl;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import watcher.ConditionalRetryExtension;
 
 import java.util.prefs.BackingStoreException;
 
@@ -23,6 +24,7 @@ public class BookingApiTest extends BaseTest {
     }
 
     @Test
+    @ConditionalRetryExtension.RetryOnTransientFailure(maxAttempts = 3)
     public void testGetBookingParam(){
         Response response = getBookingById(2);
         Assertions.assertEquals(200,response.getStatusCode());
@@ -33,6 +35,7 @@ public class BookingApiTest extends BaseTest {
    }
 
     @Test
+    @ConditionalRetryExtension.RetryOnTransientFailure(maxAttempts = 3)
     public void testCreateNewBooking(){
         Booking novaReserva = new Booking();
         novaReserva.setFirstname("Americo");

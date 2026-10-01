@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Possível instabilidade de rede/timeout",
+    "matchedStatuses": ["broken", "failed"],
+    "traceRegex": ".*(SocketTimeoutException|ConnectException|ConnectTimeoutException|UnknownHostException|NoHttpResponseException).*"
+  },
+  {
+    "name": "Falha de assertion (bug real)",
+    "matchedStatuses": ["failed"],
+    "traceRegex": ".*AssertionError.*"
+  },
+  {
+    "name": "Erro de infraestrutura/configuração",
+    "matchedStatuses": ["broken"]
+  }
+]
